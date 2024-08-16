@@ -119,15 +119,6 @@ extension DomainPrimitive where RawValue == UUID {
 }
 ```
 
-Now, if you try it just like this, you'll get a compiler warning that says the `RawValue` type should conform to `Encodable` or `Decodable`, so lets change the `DomainPrimitive` Protocol:
-
-```swift
-protocol DomainPrimitive: Codable, RawRepresentable {
-    override associatedtype RawValue: Codable
-    var rawValue: RawValue { get }
-}
-```
-
 After that, you can change the ID types to conform to this new Protocol and you get both the flat JSON structure, and compiler safety on your IDs and other simple values.
 
 ```swift
