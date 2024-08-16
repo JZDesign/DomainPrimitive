@@ -135,3 +135,5 @@ struct ActiveOfferId: DomainPrimitive {
 }
 ```
 
+Sample code and tests can be found at: https://github.com/JZDesign/DomainPrimitive/
+
