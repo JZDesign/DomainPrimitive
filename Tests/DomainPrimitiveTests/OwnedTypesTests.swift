@@ -8,6 +8,10 @@ final class OwnedTypesTests: XCTestCase {
 
         // Phantom types prevents passing in a random value here
         OwnedTypes.printID(OwnedTypes.SomeExample().uuid)
+
+        // Uncomment this line, it won't compile even though the underlying value is the same.
+        // This is due to the phantom type
+        // OwnedTypes.printID(UUID())
     }
 }
 
