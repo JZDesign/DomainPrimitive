@@ -5,35 +5,35 @@ final class OwnedTypesTests: XCTestCase {
     func testExample() throws {
         try compare(file: "ownedTypes", withContent: OwnedTypes.SomeExample().toString())
         try compare(file: "ownedTypes", withContent: OwnedTypes.SomeExample())
-        
+
         // Phantom types prevents passing in a random value here
-        OwnedTypes.printName(OwnedString<OwnedTypes>(rawValue: "name"))
+        OwnedTypes.printID(OwnedTypes.SomeExample().uuid)
     }
 }
 
 enum OwnedTypes {
     struct SomeExample: Stringable, Equatable {
-        typealias ID = OwnedUUID<Self>
+        typealias ID = OwnedType<Self, UUID>
 
-        let i: OwnedInt<Self>
-        let i8: OwnedInt8<Self>
-        let i16: OwnedInt16<Self>
-        let i32: OwnedInt32<Self>
-        let i64: OwnedInt64<Self>
+        let i: OwnedType<Self, Int>
+        let i8: OwnedType<Self, Int8>
+        let i16: OwnedType<Self, Int16>
+        let i32: OwnedType<Self, Int32>
+        let i64: OwnedType<Self, Int64>
 
-        let u: OwnedInt<Self>
-        let u8: OwnedInt8<Self>
-        let u16: OwnedInt16<Self>
-        let u32: OwnedInt32<Self>
-        let u64: OwnedInt64<Self>
+        let u: OwnedType<Self, Int>
+        let u8: OwnedType<Self, Int8>
+        let u16: OwnedType<Self, Int16>
+        let u32: OwnedType<Self, Int32>
+        let u64: OwnedType<Self, Int64>
 
-        let float: OwnedFloat<Self>
-        let decimal: OwnedDecimal<Self>
-        let double: OwnedDouble<Self>
+        let float: OwnedType<Self, Float>
+        let decimal: OwnedType<Self, Decimal>
+        let double: OwnedType<Self, Double>
 
-        let bool: OwnedBool<Self>
-        let date: OwnedDate<Self>
-        let string: OwnedString<Self>
+        let bool: OwnedType<Self, Bool>
+        let date: OwnedType<Self, Date>
+        let string: OwnedType<Self, String>
         let uuid: ID
 
         init() {
@@ -57,7 +57,7 @@ enum OwnedTypes {
         }
     }
 
-    static func printName(_ name: OwnedString<Self>) {
-        print(name)
+    static func printID(_ id: OwnedTypes.SomeExample.ID) {
+        print(id.rawValue.uuidString)
     }
 }
