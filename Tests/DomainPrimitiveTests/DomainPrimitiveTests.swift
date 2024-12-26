@@ -4,6 +4,7 @@ import XCTest
 final class DomainPrimitiveTests: XCTestCase {
     func testExample() throws {
         try compare(file: "domainPrimitive", withContent: DomainPrimitiveTypes.sample.toString())
+        try compare(file: "domainPrimitive", withContent: DomainPrimitiveTypes.sample)
     }
 }
 
@@ -26,21 +27,9 @@ enum DomainPrimitiveTypes {
         let rawValue: UInt8
     }
 
-    struct SomeExample: Stringable {
+    struct SomeExample: Stringable, Equatable {
         let uuid: SomeUniqueId
         let stringID: SomeIdentifier
         let numericalID: SomeOtherIdentifier
-    }
-}
-
-protocol Stringable: Codable {
-    func toString() throws -> String
-}
-
-extension Stringable {
-    func toString() throws -> String {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .init([.prettyPrinted, .sortedKeys])
-        return String(decoding: try encoder.encode(self), as: UTF8.self)
     }
 }

@@ -2,6 +2,16 @@ import Foundation
 import XCTest
 
 extension XCTestCase {
+    func compare<T: Codable & Equatable>(file fileName: String, withContent content: T, file: StaticString = #file, line: UInt = #line) throws {
+        let url = url(file: fileName)
+        guard let storedData = try? Data(contentsOf: url) else {
+            XCTFail("Failed to load stored data at URL: \(url). Use the `record` method to store a snapshot before asserting.", file: file, line: line)
+            return
+        }
+        let storedContent = try decoder.decode(T.self, from: storedData)
+        XCTAssertEqual(storedContent, content)
+    }
+
     func compare(file fileName: String, withContent content: String, file: StaticString = #file, line: UInt = #line) throws {
         let url = url(file: fileName)
         guard let storedData = try? String(contentsOf: url) else {
@@ -37,3 +47,27 @@ extension XCTestCase {
             .appendingPathComponent("\(file).json")
     }
 }
+
+protocol Stringable: Codable {
+    func toString() throws -> String
+}
+
+var encoder: JSONEncoder = {
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
+    encoder.outputFormatting = .init([.prettyPrinted, .sortedKeys])
+    return encoder
+}()
+
+var decoder: JSONDecoder = {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    return decoder
+}()
+
+extension Stringable {
+    func toString() throws -> String {
+        return String(decoding: try encoder.encode(self), as: UTF8.self)
+    }
+}
+
