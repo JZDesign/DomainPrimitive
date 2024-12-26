@@ -1,5 +1,5 @@
 import XCTest
-@testable import DomainPrimitive
+import DomainPrimitive
 
 final class OwnedTypesTests: XCTestCase {
     func testExample() throws {
