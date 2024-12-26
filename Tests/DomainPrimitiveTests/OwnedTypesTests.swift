@@ -13,6 +13,8 @@ final class OwnedTypesTests: XCTestCase {
 
 enum OwnedTypes {
     struct SomeExample: Stringable, Equatable {
+        typealias ID = OwnedUUID<Self>
+
         let i: OwnedInt<Self>
         let i8: OwnedInt8<Self>
         let i16: OwnedInt16<Self>
@@ -32,7 +34,7 @@ enum OwnedTypes {
         let bool: OwnedBool<Self>
         let date: OwnedDate<Self>
         let string: OwnedString<Self>
-        let uuid: OwnedUUID<Self>
+        let uuid: ID
 
         init() {
             self.i = .init(rawValue: 100)
