@@ -2,6 +2,7 @@ import Foundation
 
 public typealias DomainPrimitiveType = Codable & Hashable & Equatable
 
+/// A useful utility that allows for the creation of new types that encode or decode as single values like primitive types
 public protocol DomainPrimitive: DomainPrimitiveType, RawRepresentable {
     override associatedtype RawValue: DomainPrimitiveType
     var rawValue: RawValue { get }
