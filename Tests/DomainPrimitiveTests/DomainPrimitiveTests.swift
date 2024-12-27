@@ -1,9 +1,18 @@
 import XCTest
-@testable import DomainPrimitive
+import DomainPrimitive
 
 final class DomainPrimitiveTests: XCTestCase {
     func testExample() throws {
         try compare(file: "domainPrimitive", withContent: DomainPrimitiveTypes.sample.toString())
+        try compare(file: "domainPrimitive", withContent: DomainPrimitiveTypes.sample)
+    }
+
+    func testComplex() throws {
+        try compare(file: "complex", withContent: DomainPrimitiveTypes.complex.toString())
+        try compare(file: "complex", withContent: DomainPrimitiveTypes.complex)
+
+        try compare(file: "complex2", withContent: DomainPrimitiveTypes.complex2.toString())
+        try compare(file: "complex2", withContent: DomainPrimitiveTypes.complex2)
     }
 }
 
@@ -13,6 +22,9 @@ enum DomainPrimitiveTypes {
         stringID: .init(rawValue: "my-string-id"),
         numericalID: .init(rawValue: 32)
     )
+
+    static let complex = ComplexExample(rawValue: sample)
+    static let complex2 = ComplexExample2(data: complex)
 
     struct SomeUniqueId: DomainPrimitive {
         let rawValue: UUID
@@ -26,21 +38,20 @@ enum DomainPrimitiveTypes {
         let rawValue: UInt8
     }
 
-    struct SomeExample: Stringable {
+    struct SomeExample: Stringable, Hashable, Equatable {
         let uuid: SomeUniqueId
         let stringID: SomeIdentifier
         let numericalID: SomeOtherIdentifier
     }
-}
 
-protocol Stringable: Codable {
-    func toString() throws -> String
-}
+    // MARK: - These are really unecessary examples.
+    // There is no reason to use the domain primitive this way, but for the sake of being thorough… Here they are
 
-extension Stringable {
-    func toString() throws -> String {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .init([.prettyPrinted, .sortedKeys])
-        return String(decoding: try encoder.encode(self), as: UTF8.self)
+    struct ComplexExample: Stringable, DomainPrimitive {
+        let rawValue: SomeExample
+    }
+
+    struct ComplexExample2: Stringable, Equatable {
+        let data: ComplexExample
     }
 }
